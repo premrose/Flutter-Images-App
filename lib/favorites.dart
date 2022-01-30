@@ -20,18 +20,6 @@ class FavouriteWidget extends StatelessWidget {
     final double itemWidth = size.width / 2.1;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Favorites'.toUpperCase(),style: TextStyle(
-      //       fontFamily: 'Roboto',
-      //       fontSize: 16,
-      //       fontWeight: FontWeight.w500,
-      //       color: Theme.of(context).primaryColor
-      //   )),
-      //   centerTitle: true,
-      //   titleSpacing: 10,
-      //   elevation: 0,
-      //   toolbarHeight: 50,
-      // ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
