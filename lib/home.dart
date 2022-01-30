@@ -89,23 +89,29 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                           fit: BoxFit.cover,
                         ),
                      ),
-                      child: Row(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children:[
-                          Container(),
-                        IconButton(
-                          icon: Icon( liked ?Icons.favorite: Icons.favorite,
-                            color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1), size: 15.0),
-                          onPressed: () {
-                            setState(() {
-                              if (liked) {
-                                likedImages.remove(save);
-                              } else {
-                                likedImages.add(save);
-                              }
-                            });
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children:[
+                              Container(),
+                            IconButton(
+                              icon: Icon( liked ?Icons.favorite: Icons.favorite,
+                                color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1), size: 22.0),
+                              onPressed: () {
+                                setState(() {
+                                  if (liked) {
+                                    likedImages.remove(save);
+                                  } else {
+                                    likedImages.add(save);
+                                  }
+                                });
 
-                          }
-                          ),
+                              }
+                              ),
+                            ]
+                          )
                         ]
                       )
                     ),
