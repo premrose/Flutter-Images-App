@@ -5,6 +5,7 @@ import 'package:sp/trendingsearch.dart';
 
 import 'customappbar.dart';
 import 'customdrawer.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'SP',
             theme: ThemeData(
-              primaryColor: Colors.white,
+              primaryColor: Colors.black,
               primaryColorBrightness: Brightness.dark,
               brightness: Brightness.light,
               primaryColorLight: Colors.black,
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
               canvasColor: Colors.white,
               indicatorColor: Colors.black54,
               appBarTheme: const AppBarTheme(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 iconTheme: IconThemeData(
                   color: Color(0xFF242121),
                 ),
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             darkTheme: ThemeData(
-              primaryColor: Colors.black,
+              primaryColor: Colors.white,
               primaryColorBrightness: Brightness.light,
               primaryColorLight: Colors.white,
               brightness: Brightness.dark,
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             themeMode: currentMode,
-            home: const MyHomePage(title: ''),
+            home: const MyHomePage(title: 'SP'),
           );
         }
     );
@@ -95,6 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
   late String _title;
 
   @override
+  initState(){ _title='SP'; }
+
+  @override
   Widget build(BuildContext context) {
 
     return WillPopScope(
@@ -110,8 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
     },
     child: Scaffold(
       appBar: pageIndex == 0 ? CustomAppBar(title: _title,) : null,
-      drawer: const CustomDrawer(),
-      body: _getnavigation( pageIndex ),
+      endDrawer: const CustomDrawer(),
+      body: _getNavigation( pageIndex ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedFontSize: 17,
@@ -150,11 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _getnavigation( int index ){
+  _getNavigation( int index ){
     switch(index) {
       case 0:
-        return Scaffold(
-          body: HomeWidget(title: _title),
+        return const Scaffold(
+          body: HomeWidget(),
         );
       case 1:
         return const Scaffold(

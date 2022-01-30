@@ -21,20 +21,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Builder(builder: (context) =>
-          Transform.rotate(
-            angle: 0,
-            child: IconButton(
-                icon: const Icon(Icons.notes_rounded),
-                // color: Colors.black,
-                iconSize: 30.0,
-                onPressed: () => Scaffold.of(context).openDrawer()
-            ),
-          ),
-      ),
-      leadingWidth: 50,
       toolbarHeight: 45,
-      title: Text(widget.title),
+      title: Text(title),
       centerTitle: true,
       titleSpacing: 0,
       elevation: 0,
@@ -43,15 +31,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
       ),
       actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.shopping_cart_outlined),
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => CartWidget(),),
-            // );
-          },
+        Builder(builder: (context) =>
+            Transform.rotate(
+              angle: 0,
+              child: IconButton(
+                  icon: const Icon(Icons.notes_rounded),
+                  // color: Colors.black,
+                  iconSize: 30.0,
+                  onPressed: () => Scaffold.of(context).openEndDrawer()
+              ),
+            ),
         ),
       ],
     );
