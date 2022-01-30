@@ -3,9 +3,10 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
-import 'package:sp/imagedata.dart';
 
+import 'package:sp/imagedata.dart';
 import 'details.dart';
+import 'favorites.dart';
 
 void main() {
   runApp( const HomeWidget() );
@@ -29,11 +30,7 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
     super.initState();
     images = getImagesList();
   }
-
-  bool liked = false;
-  _pressed() {
-    liked = !liked;
-  }
+  List<String> likedImages = <String>[];
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
@@ -70,6 +67,9 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
               ),
               itemBuilder: (BuildContext context, int index) {
                 var data = snapshot.data![index];
+                String save = data.thumbnail;
+                bool liked = likedImages.contains(save);
+
                 return InkWell(
                   child: Padding(
                     padding: const EdgeInsets.all(3),
@@ -89,15 +89,38 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                           fit: BoxFit.cover,
                         ),
                      ),
+                      child: Row(
+                        children:[
+                          Container(),
+                        IconButton(
+                          icon: Icon( liked ?Icons.favorite: Icons.favorite,
+                            color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1), size: 15.0),
+                          onPressed: () {
+                            setState(() {
+                              if (liked) {
+                                likedImages.remove(save);
+                              } else {
+                                likedImages.add(save);
+                              }
+                            });
+
+                          }
+                          ),
+                        ]
+                      )
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(
-                      context, MaterialPageRoute(
-                      builder: (BuildContext context) => DetailsWidget(imageData: data,),
-                    ),
+                    showModalBottomSheet(
+                      context: context,
+                        isScrollControlled: true,
+                      builder: (context) {
+                        return FractionallySizedBox(
+                            heightFactor: 0.96,
+                            child: DetailsWidget(imageData: data,)
                     );
-                  },
+                  });
+                    },
                   // onDoubleTap: () {
                   //   Navigator.push(
                   //     context, MaterialPageRoute(
@@ -134,6 +157,17 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
       ),
     );
   }
+
+  Future pushToFavoriteWordsRoute(BuildContext context) {
+    return Navigator.push(
+          context, MaterialPageRoute(
+          builder: (BuildContext context) =>  FavouriteWidget(
+            favoriteItems: likedImages,
+        ),
+      ),
+    );
+  }
+
 }
 
 

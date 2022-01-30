@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'favorites.dart';
+import 'home.dart';
 import 'main.dart';
 
 void main() {
@@ -13,245 +14,137 @@ class CustomDrawer extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-            child: Drawer(
-                child: ListView(
-                  children: [
-                    InkWell(
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                        height: 160,
-                        child: UserAccountsDrawerHeader(
-                          currentAccountPictureSize: const Size.square(200.0),
-                          accountEmail: const Text(''),
-                          accountName: Row(
+        child: Drawer(
+            child: Column(
+              children: [
+                InkWell(
+                  child: UserAccountsDrawerHeader(
+                      currentAccountPictureSize: const Size.square(200.0),
+                      accountEmail: const Text(''),
+                      accountName: Row(
+                        children: <Widget>[
+                          const SizedBox(
+                            width: 80,
+                            height: 100,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZhY2V8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60'),
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const SizedBox(
-                                width: 80,
-                                height: 100,
-                                child: CircleAvatar(
-                                  backgroundImage: AssetImage('assets/profile.jpg'),
+                              Text('John Doe'.toUpperCase(),
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 22,
+                                  letterSpacing: 1,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 8),
-                                  Text('John Doe'.toUpperCase(),
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                      color: Color.fromRGBO(0, 0, 0, 1),
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20,
-                                      letterSpacing: 1,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                  Text(
-                                      'jo*****oe@gmail.com'.toLowerCase(),
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'Roboto',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )
-                                  ),
-                                ],
+                              Text(
+                                  'jo*****oe@gmail.com'.toLowerCase(),
+                                  style: const TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  )
                               ),
                             ],
                           ),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(255, 255, 255, 1),
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: const AssetImage(
-                                  'assets/profile.jpg'),
-                              colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.2),
-                                  BlendMode.dstATop),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
-                      onTap: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(
-                        //   builder: (BuildContext context) =>
-                        //       SigninWidget(),
-                        // ),
-                        // );
-                      },
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  trailing: const Icon(Icons.home_outlined,size: 22                    ),
+                  title: const Text('Home',
+                    textAlign: TextAlign.left, style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.home_outlined,size: 22                    ),
-                      title: const Text('Home',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  ),
 
-                      onTap: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(
-                        //   builder: (BuildContext context) =>
-                        //   const MyStatefulWidget(title: 'LOGO',),
-                        // ),
-                        // );
-                      },
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 15,
-                      horizontalTitleGap: 10,
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.grid_view_outlined,size: 22),
-                      title: const Text('Categories',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  onTap: () {
+                    Navigator.push(
+                      context, MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                        const HomeWidget(),
                       ),
-
-                      onTap: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(
-                        //   builder: (BuildContext context) =>
-                        //       CategoriesWidget(),
-                        // ),
-                        // );
-                      },
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 15,
-                      horizontalTitleGap: 10,
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.favorite_border_outlined,size: 22),
-                      title: const Text('Saved',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      onTap: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(
-                        //   builder: (
-                        //       BuildContext context) => const FavouriteWidget(),
-                        // ),
-                        // );
-                      },
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 15,
-                      horizontalTitleGap: 10,
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.shopping_cart_outlined,size: 22),
-                      title: const Text('Cart',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      trailing: const Icon(Icons.looks_3_outlined),
-                      onTap: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(
-                        //   builder: (BuildContext context) =>
-                        //       CartWidget(),
-                        // ),
-                        // );
-                      },
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 15,
-                      horizontalTitleGap: 10,
-                    ),
-                    const ListTile(
-                      leading: Icon(Icons.sticky_note_2_outlined,size: 22),
-                      title: Text('Terms & Conditions',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 25,
-                      horizontalTitleGap: 10,
-                    ),
-                    const ListTile(
-                      leading: Icon(Icons.phone,size: 22),
-                      title: Text('Contact Us',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 15,
-                      horizontalTitleGap: 10,
-                    ),
-                    const ListTile(
-                      leading: Icon(Icons.contact_support_outlined,size: 22),
-                      title: Text('About US',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      minVerticalPadding: 0,
-                      minLeadingWidth: 15,
-                      horizontalTitleGap: 10,
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 40.0),),
-                    ListTile(
-                      title: const Text('App Theme',
-                        textAlign: TextAlign.left, style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    );
+                  },
+                  minVerticalPadding: 0,
+                  minLeadingWidth: 15,
+                  horizontalTitleGap: 10,
+                ),
+                ListTile(
+                  trailing: const Icon(Icons.favorite_border_outlined,size: 22),
+                  title: const Text('Saved',
+                    textAlign: TextAlign.left, style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  onTap: () {
+                    Navigator.push(
+                      context, MaterialPageRoute(
+                        builder: (
+                          BuildContext context) => const FavouriteWidget(favoriteItems: [],),
                       ),
-                      trailing: Icon(MyApp.themeNotifier.value == ThemeMode.light
-                          ? Icons.dark_mode
-                          : Icons.light_mode,size: 24),
-                      onTap: () {
-                        MyApp.themeNotifier.value =
-                        MyApp.themeNotifier.value == ThemeMode.light
-                            ? ThemeMode.dark
-                            : ThemeMode.light;
-                      },
+                    );
+                  },
+                  minVerticalPadding: 0,
+                  minLeadingWidth: 15,
+                  horizontalTitleGap: 10,
+                ),
+                ListTile(
+                  title: const Text('App Theme',
+                    textAlign: TextAlign.left, style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    ListTile(
-                      title: const Text('Language',
-                        textAlign: TextAlign.left, style: TextStyle( 
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      trailing: const Icon(Icons.language,size: 22),
-                      onTap: () {
-                        // Navigator.push(
-                        //   context, MaterialPageRoute(
-                        //   builder: (BuildContext context) =>
-                        //   const MyStatefulWidget(title: 'LOGO',),
-                        // ),
-                        // );
-                      },
-                    ), 
-                  ],
-                )
+                  ),
+                  trailing: Icon(MyApp.themeNotifier.value == ThemeMode.light
+                      ? Icons.dark_mode
+                      : Icons.light_mode,size: 24),
+                  onTap: () {
+                    MyApp.themeNotifier.value =
+                    MyApp.themeNotifier.value == ThemeMode.light
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+                  },
+                ),
+                Expanded(child: Container()),
+                ListTile(
+                  title: const Text('Logout',
+                    textAlign: TextAlign.left, style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.logout_outlined,size: 22),
+                  onTap: () {
+                    // Navigator.push(
+                    //   context, MaterialPageRoute(
+                    //   builder: (BuildContext context) =>
+                    //   const MyStatefulWidget(title: 'LOGO',),
+                    // ),
+                    // );
+                  },
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 15.0),),
+              ],
             )
+        )
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'main.dart';
+import 'package:sp/trendingsearch.dart';
 
 void main() {
   runApp( CustomAppBar(title: ''));
@@ -8,29 +7,46 @@ void main() {
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
-  late final String title;
+  String? title;
 
   CustomAppBar({Key? key, required this.title, }) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
 
-  @override
   initState(){ title=''; }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 45,
-      title: Text(title),
-      centerTitle: true,
-      titleSpacing: 0,
+      toolbarHeight: 50,
+      title: Text(title!,
+          style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).primaryColor
+          )
+      ),
+      centerTitle: false,
+      titleSpacing: 12,
       elevation: 0,
       shape: const RoundedRectangleBorder(
         // side: const BorderSide(width: 1),
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
       ),
       actions: <Widget>[
+        IconButton(
+            icon: const Icon(Icons.search_outlined),
+            onPressed: () {
+              Navigator.push(
+                context, MaterialPageRoute(
+                builder: (BuildContext context) =>
+                const SearchWidget(),
+              ),
+              );
+            }
+        ),
         Builder(builder: (context) =>
             Transform.rotate(
               angle: 0,
@@ -42,6 +58,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
         ),
+        const SizedBox(width: 3)
       ],
     );
   }

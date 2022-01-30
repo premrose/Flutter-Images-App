@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sp/profile.dart';
-import 'package:sp/trendingsearch.dart';
 
 import 'customappbar.dart';
 import 'customdrawer.dart';
@@ -71,7 +69,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             themeMode: currentMode,
-            home: const MyHomePage(title: 'SP'),
+            home: const MyHomePage(title: 'WALLPAPERHIVE'),
           );
         }
     );
@@ -96,78 +94,15 @@ class _MyHomePageState extends State<MyHomePage> {
   late String _title;
 
   @override
-  initState(){ _title='SP'; }
+  initState(){ _title='WALLPAPERHIVE'; }
 
   @override
   Widget build(BuildContext context) {
 
-    return WillPopScope(
-        onWillPop: ()async{
-      if(pageIndex == 0) {
-        return true;
-      }
-      setState(() {
-        pageIndex = 0;
-        _title= '';
-      });
-      return false;
-    },
-    child: Scaffold(
+    return Scaffold(
       appBar: pageIndex == 0 ? CustomAppBar(title: _title,) : null,
       endDrawer: const CustomDrawer(),
-      body: _getNavigation( pageIndex ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 17,
-        unselectedFontSize: 16,
-        elevation: 0,
-        selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
-        showSelectedLabels: true,
-        showUnselectedLabels: false,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home_rounded),
-            label: '●',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            activeIcon: Icon(Icons.search),
-            label: '●',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.whatshot_outlined),
-            activeIcon: Icon(Icons.whatshot),
-            label: '●',
-          ),
-        ],
-        currentIndex: pageIndex,
-        onTap: (index) {
-          setState(() {
-            pageIndex = index;
-
-          });
-        },
-      ),
-
-    ),
+      body: const HomeWidget(),
     );
-  }
-
-  _getNavigation( int index ){
-    switch(index) {
-      case 0:
-        return const Scaffold(
-          body: HomeWidget(),
-        );
-      case 1:
-        return const Scaffold(
-          body: SearchWidget(),
-        );
-      case 2:
-        return const Scaffold(
-          body: ProfileWidget(),
-        );
-    }
   }
 }
