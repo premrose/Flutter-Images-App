@@ -127,22 +127,6 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                     );
                   });
                     },
-                  // onDoubleTap: () {
-                  //   Navigator.push(
-                  //     context, MaterialPageRoute(
-                  //     builder: (BuildContext context) => FavouriteWidget(),
-                  //   ),
-                  //   );
-                  // },
-                  // onLongPress: () {
-                  //   Navigator.push(
-                  //     context, MaterialPageRoute(
-                  //     builder: (BuildContext context) => CartWidget(),
-                  //   ),
-                  //   );
-                  // },
-
-
                 );
               },
             );
@@ -175,30 +159,3 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
   }
 
 }
-
-
-// _photos = snapshot.data.toList().map(
-//                         (photo) => InkWell(
-//                         onTap: () {
-//                         Navigator.push(
-//                             context,
-//                               MaterialPageRoute(builder: (context) => DetailsWidget(
-//                                 arguments: {
-//                                   'id': photo['id'],
-//                                   'urls_raw': photo['urls']['raw'],
-//                                   'urls_regular': photo['urls']['regular'],
-//                                   'user': photo['user'],
-//                                   'likes': photo['likes'],
-//                                   'color': photo['color'],
-//                                   'width': photo['width'],
-//                                   'height': photo['height'],
-//                                   'created_at': photo['created_at'],
-//                                   'links_html': photo['links']['html'],
-//                                 }
-//                             )
-//                               ),
-//                         );
-//                       },
-//                     ),
-//                   )
-
