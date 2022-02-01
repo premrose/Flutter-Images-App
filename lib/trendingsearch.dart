@@ -22,13 +22,54 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   final _search = TextEditingController();
 
-  String result = '';
+  List? data;
+  String? search;
 
   getTextInputData(){
     setState(() {
-      result = _search.text;
+      search = _search.text;
     });
   }
+  final imagesListKey = GlobalKey<_SearchWidgetState>();
+
+  late final ImageData imageData;
+
+  @override
+  void initState() {
+    super.initState();
+    getImagesList();
+  }
+
+  Future<String> getImagesList() async {
+    if(search != null){
+      var response= await http.get(
+          Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&query=$search'));
+
+      setState(() {
+        var converted = json.decode(response.body);
+        data=converted['results'];
+    });
+    }
+    else{
+      return 'Search';
+    }
+    return 'success';
+  }
+
+  // Future<List<ImageData>> getImagesList() async {
+  //   final response = await http.get(
+  //       Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&query=$result'));
+  //
+  //   if (response.statusCode == 200) {
+  //     final items = jsonDecode(response.body);
+  //     List<ImageData> images = items.map<ImageData>((json) {
+  //       return ImageData.fromJson(json);
+  //     }).toList();
+  //     return images;
+  //   } else {
+  //     throw Exception('Failed to load Data');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +81,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               enableSuggestions : true,
               controller: _search,
               decoration: const InputDecoration(
-                hintText: "Search Products or Accounts",
+                hintText: "Search for Images",
                 hintStyle: TextStyle(
                   color: Color.fromRGBO(146, 146, 146, 0.7300000190734863),
                   fontFamily: 'Roboto',
@@ -52,151 +93,60 @@ class _SearchWidgetState extends State<SearchWidget> {
                 focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 0, color: Colors.transparent,)),
                 focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.red,)),
               ),
-              onChanged: (value) => result = value,
+              onChanged: (value) {
+                setState(() {
+                  search= value;
+                });
+                getImagesList();
+              },
             ),
             titleSpacing: 0,
             elevation: 0,
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: getTextInputData,
-              ),
-            ],
+            // actions: <Widget>[
+              // IconButton(
+              //   icon: const Icon(Icons.search),
+              //   onPressed: getTextInputData,
+              // ),
+            // ],
           ),
-      body: SearchBarWidget(imageList: result),
-    );
-  }
-
-}
-
-class SearchBarWidget extends StatefulWidget  {
-
-  String? imageList;
-
-  SearchBarWidget({Key? key, required this.imageList}) : super(key: key);
-
-  @override
-  _SearchBarWidgetState createState() => _SearchBarWidgetState();
-}
-
-class _SearchBarWidgetState extends State<SearchBarWidget> {
-
-  late Future<List<ImageData>> images;
-
-  final imagesListKey = GlobalKey<_SearchBarWidgetState>();
-
-  late final ImageData imageData;
-
-  static const pattern = [
-    QuiltedGridTile(2, 2),
-    QuiltedGridTile(1, 1),
-    QuiltedGridTile(1, 1),
-    QuiltedGridTile(1, 2),
-  ];
-
-  get imageList => imageList;
-
-
-  @override
-  void initState() {
-    super.initState();
-    images = getImagesList();
-  }
-
-  Future<List<ImageData>> getImagesList() async {
-    final response = await http.get(
-        Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=...&query=$imageList'));
-
-    if (response.statusCode == 200) {
-      final items = jsonDecode(response.body);
-      List<ImageData> images = items.map<ImageData>((json) {
-        return ImageData.fromJson(json);
-      }).toList();
-      return images;
-    } else {
-      throw Exception('Failed to load Data');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<ImageData>>(
-            future: images,
-            builder: (BuildContext context, AsyncSnapshot<List<ImageData>> snapshot) {
-              if(snapshot.hasData){
-                if(snapshot.data != null) {
-                  return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.70,
+      body: search == null ? Container():
+          GridView.builder(
+            gridDelegate: SliverQuiltedGridDelegate(
+              crossAxisCount: 4,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              repeatPattern: QuiltedGridRepeatPattern.inverted,
+              pattern: const [
+                QuiltedGridTile(2, 2),
+                QuiltedGridTile(1, 1),
+                QuiltedGridTile(1, 1),
+                QuiltedGridTile(1, 1),
+                QuiltedGridTile(1, 1),
+              ],
+            ),
+            itemCount: data == null ?0:data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius : const BorderRadius.all(Radius.circular(3)),
+                    color : const Color.fromRGBO(230, 230, 230, 1),
+                    image : DecorationImage(
+                      image: NetworkImage(data![index]['urls']['small']),
+                      fit: BoxFit.cover,
                     ),
-                    itemBuilder: (BuildContext context, int index) {
-                      var data = snapshot.data![index];
-                      return InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.all(3),
-                          child: Container(
-                            height : 300,
-                            width : 150,
-                            decoration: BoxDecoration(
-                              borderRadius : const BorderRadius.only(
-                                topLeft: Radius.circular(5),
-                                topRight: Radius.circular(5),
-                                bottomLeft: Radius.circular(5),
-                                bottomRight: Radius.circular(5),
-                              ),
-                              color : const Color.fromRGBO(230, 230, 230, 1),
-                              image : DecorationImage(
-                                image: NetworkImage(data.thumbnail),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context, MaterialPageRoute(
-                            builder: (BuildContext context) => DetailsWidget(imageData: data,),
-                          ),
-                          );
-                        },
-                        // onDoubleTap: () {
-                        //   Navigator.push(
-                        //     context, MaterialPageRoute(
-                        //     builder: (BuildContext context) => FavouriteWidget(),
-                        //   ),
-                        //   );
-                        // },
-                        // onLongPress: () {
-                        //   Navigator.push(
-                        //     context, MaterialPageRoute(
-                        //     builder: (BuildContext context) => CartWidget(),
-                        //   ),
-                        //   );
-                        // },
-
-
-                      );
-                    },
-                  );
-                }else {
-                  return const Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Color(0xffadadad),
-                        valueColor: AlwaysStoppedAnimation(Color(0xff000000)),
-                        semanticsLabel: 'wait a while',
-                      )
-                  );
-                }
-              }
-              else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              return const Center(
-                  child: Text('Search Images'
-                  )
+                  ),
+                ),
+                onTap: () {
+                  // Navigator.push(
+                  //   context, MaterialPageRoute(
+                  //   builder: (BuildContext context) => DetailsWidget(imageData: data![index]['urls']['small'],),
+                  // ),
+                  // );
+                },
               );
-            }
+            },
+          )
     );
   }
 

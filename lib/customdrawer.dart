@@ -59,7 +59,7 @@ class CustomDrawer extends StatelessWidget{
                   onTap: () {},
                 ),
                 ListTile(
-                  trailing: const Icon(Icons.home_outlined,size: 22                    ),
+                  trailing: const Icon(Icons.home_outlined,size: 22),
                   title: const Text('Home',
                     textAlign: TextAlign.left, style: TextStyle(
                       fontFamily: 'Roboto',

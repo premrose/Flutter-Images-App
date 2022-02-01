@@ -42,11 +42,6 @@ class MyApp extends StatelessWidget {
                   statusBarIconBrightness: Brightness.dark ,
                 ),
               ),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                selectedItemColor: const Color(0xFF242121),
-                unselectedItemColor: Colors.black.withOpacity(.4),
-
-              ),
             ),
             darkTheme: ThemeData(
               primaryColor: Colors.white,
@@ -62,10 +57,6 @@ class MyApp extends StatelessWidget {
                   statusBarColor: Colors.black,
                   statusBarIconBrightness: Brightness.light ,
                 ),
-              ),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                selectedItemColor: const Color(0xFFFFFFFF),
-                unselectedItemColor: Colors.white.withOpacity(.65),
               ),
             ),
             themeMode: currentMode,
@@ -102,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: pageIndex == 0 ? CustomAppBar(title: _title,) : null,
       endDrawer: const CustomDrawer(),
-      body: const HomeWidget(),
+      body: FilterListWidget(),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sp/trendingsearch.dart';
 
 void main() {
   runApp( CustomAppBar(title: ''));
@@ -19,12 +18,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 50,
+      toolbarHeight: 55,
       title: Text(title!,
           style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: 'Montserrat',
               fontSize: 18,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w500,
               color: Theme.of(context).primaryColor
           )
       ),
@@ -36,24 +35,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
       ),
       actions: <Widget>[
-        IconButton(
-            icon: const Icon(Icons.search_outlined),
-            onPressed: () {
-              Navigator.push(
-                context, MaterialPageRoute(
-                builder: (BuildContext context) =>
-                const SearchWidget(),
-              ),
-              );
-            }
-        ),
         Builder(builder: (context) =>
             Transform.rotate(
               angle: 0,
               child: IconButton(
                   icon: const Icon(Icons.notes_rounded),
                   // color: Colors.black,
-                  iconSize: 30.0,
+                  iconSize: 27.0,
                   onPressed: () => Scaffold.of(context).openEndDrawer()
               ),
             ),
