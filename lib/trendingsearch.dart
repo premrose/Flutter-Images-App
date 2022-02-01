@@ -43,7 +43,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   Future<String> getImagesList() async {
     if(search != null){
       var response= await http.get(
-          Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&query=$search'));
+          Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=..,&query=$search'));
 
       setState(() {
         var converted = json.decode(response.body);

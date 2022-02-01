@@ -95,7 +95,7 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
-        Uri.parse('https://api.unsplash.com/photos/?client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&per_page=30&page='));
+        Uri.parse('https://api.unsplash.com/photos/?client_id=...&per_page=30&page='));
 
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body);
