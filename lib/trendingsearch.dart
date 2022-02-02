@@ -58,7 +58,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   // Future<List<ImageData>> getImagesList() async {
   //   final response = await http.get(
-  //       Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&query=$result'));
+  //       Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=&query=$result'));
   //
   //   if (response.statusCode == 200) {
   //     final items = jsonDecode(response.body);
@@ -138,11 +138,11 @@ class _SearchWidgetState extends State<SearchWidget> {
                   ),
                 ),
                 onTap: () {
-                  // Navigator.push(
-                  //   context, MaterialPageRoute(
-                  //   builder: (BuildContext context) => DetailsWidget(imageData: data![index]['urls']['small'],),
-                  // ),
-                  // );
+                  Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (BuildContext context) => DetailsWidget(imageData: (data![index]['urls']['small']),),
+                    ),
+                  );
                 },
               );
             },
