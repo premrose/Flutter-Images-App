@@ -25,6 +25,7 @@ class FavouriteWidget extends StatelessWidget {
           crossAxisCount: 2,
           childAspectRatio: 0.70,
         ),
+        itemCount: favoriteItems.length,
         itemBuilder: (BuildContext context, int index) {
 
           return InkWell(

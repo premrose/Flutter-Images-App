@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sp/trendingsearch.dart';
 
 void main() {
   runApp( CustomAppBar(title: ''));
@@ -35,6 +36,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
       ),
       actions: <Widget>[
+        IconButton(
+            icon: const Icon(Icons.search_outlined),
+            onPressed: () {
+              Navigator.push(
+                context, MaterialPageRoute(
+                builder: (BuildContext context) =>
+                const SearchWidget(),
+              ),
+              );
+            }
+        ),
         Builder(builder: (context) =>
             Transform.rotate(
               angle: 0,

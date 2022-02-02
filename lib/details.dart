@@ -7,7 +7,7 @@ class DetailsWidget extends StatelessWidget{
 
   final ImageData imageData;
 
-  DetailsWidget({Key? key, required this.imageData}) : super(key: key);
+  const DetailsWidget({Key? key, required this.imageData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

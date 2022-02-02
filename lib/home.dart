@@ -3,13 +3,74 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sp/imagedata.dart';
+import 'package:sp/trendingsearch.dart';
 import 'details.dart';
 import 'favorites.dart';
 
 void main() {
-  runApp( const HomeWidget() );
+  runApp(  FilterListWidget() );
+}
+
+class FilterListWidget extends StatelessWidget{
+  FilterListWidget({Key? key}) : super(key: key);
+
+  final List<String> _chipLabel = ['Latest', 'Trending', 'Wallpapers', 'Abstract', 'Animals', 'Technology', 'Nature'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: [
+          Center(
+            child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.search_outlined),
+                      onPressed: () {
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                          const SearchWidget(),
+                        ),
+                        );
+                      }
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: SizedBox(
+                        height: 50,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: List<Widget>.generate(7, (int index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: ChoiceChip(
+                                  label: Text(_chipLabel[index]),
+                                  selected: true,
+                                  shape: const StadiumBorder(side: BorderSide(color: Colors.black12)),
+                                  onSelected: (bool selected) {
+
+                                  }
+                              ),
+                            );
+                          },
+                          ),
+                        )
+                    ),
+                  ),
+                ]
+            ),
+          ),
+          const Flexible(
+              child: HomeWidget()
+          )
+        ]
+    );
+  }
+
 }
 
 class HomeWidget extends StatefulWidget  {
@@ -34,7 +95,7 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
-        Uri.parse('https://api.unsplash.com/photos/?client_id=...&per_page=30&page='));
+        Uri.parse('https://api.unsplash.com/photos/?client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&per_page=30&page='));
 
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body);
@@ -45,6 +106,15 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
     } else {
       throw Exception('Failed to load Data');
     }
+  }
+
+  Future<bool> addFavorite(String imageURL) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var favorites = preferences.getStringList("favorites") ?? [];
+    favorites.add(imageURL);
+    // convert list to set
+    preferences.setStringList("favorites", favorites);
+    return true;
   }
 
   @override
@@ -96,22 +166,41 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children:[
                               Container(),
-                            IconButton(
-                              icon: Icon( liked ?Icons.favorite: Icons.favorite,
-                                color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1), size: 22.0),
-                              onPressed: () {
-                                setState(() {
-                                  if (liked) {
-                                    likedImages.remove(save);
-                                  } else {
-                                    likedImages.add(save);
-                                  }
-                                });
+                              Container(
+                                  height : 30,
+                                  width : 30,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: const BoxDecoration(
+                                    borderRadius : BorderRadius.all(Radius.circular(18)),
+                                    color: Color(0x20000000),
+                                  ),
+                                  child: InkWell(
+                                    child: Icon( liked ?Icons.favorite: Icons.favorite,
+                                      color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1), size: 22.0),
+                                    onTap: () {
+                                      setState(() {
+                                        if (liked) {
+                                          likedImages.remove(save);
 
-                              }
+                                        } else {
+                                          likedImages.add(save);
+                                        }
+                                      });
+                                    },
+                                    onLongPress: () {
+                                      Navigator.push(
+                                          context, MaterialPageRoute(
+                                          builder: (BuildContext context) =>  FavouriteWidget(
+                                        favoriteItems: likedImages,
+                                      ),
+                                      ));
+                                    }
+                                  ),
                               ),
+                              const SizedBox(width: 5),
                             ]
-                          )
+                          ),
+                          const SizedBox(height: 5),
                         ]
                       )
                     ),
@@ -127,22 +216,16 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                     );
                   });
                     },
-                  // onDoubleTap: () {
-                  //   Navigator.push(
-                  //     context, MaterialPageRoute(
-                  //     builder: (BuildContext context) => FavouriteWidget(),
-                  //   ),
-                  //   );
-                  // },
-                  // onLongPress: () {
-                  //   Navigator.push(
-                  //     context, MaterialPageRoute(
-                  //     builder: (BuildContext context) => CartWidget(),
-                  //   ),
-                  //   );
-                  // },
+                  onDoubleTap: () {
+                    setState(() {
+                      if (liked) {
+                        likedImages.remove(save);
 
-
+                      } else {
+                        likedImages.add(save);
+                      }
+                    });
+                  },
                 );
               },
             );
@@ -163,42 +246,6 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
       ),
     );
   }
-
-  Future pushToFavoriteWordsRoute(BuildContext context) {
-    return Navigator.push(
-          context, MaterialPageRoute(
-          builder: (BuildContext context) =>  FavouriteWidget(
-            favoriteItems: likedImages,
-        ),
-      ),
-    );
-  }
-
 }
 
-
-// _photos = snapshot.data.toList().map(
-//                         (photo) => InkWell(
-//                         onTap: () {
-//                         Navigator.push(
-//                             context,
-//                               MaterialPageRoute(builder: (context) => DetailsWidget(
-//                                 arguments: {
-//                                   'id': photo['id'],
-//                                   'urls_raw': photo['urls']['raw'],
-//                                   'urls_regular': photo['urls']['regular'],
-//                                   'user': photo['user'],
-//                                   'likes': photo['likes'],
-//                                   'color': photo['color'],
-//                                   'width': photo['width'],
-//                                   'height': photo['height'],
-//                                   'created_at': photo['created_at'],
-//                                   'links_html': photo['links']['html'],
-//                                 }
-//                             )
-//                               ),
-//                         );
-//                       },
-//                     ),
-//                   )
 
