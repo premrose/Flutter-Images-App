@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sp/imagedata.dart';
@@ -23,7 +21,7 @@ class SearchWidget extends StatefulWidget  {
 class _SearchWidgetState extends State<SearchWidget> {
 
   final List<String> _chipLabel = ['Latest', 'Trending', 'Wallpapers', 'Abstract', 'Animals', 'Technology', 'Nature'];
-  final List<bool> _selected = [false];
+  final List<bool> _selected = [false, false,false, false,false, false,false];
   final _search = TextEditingController();
 
   late Future<List<ImageData>> images;
@@ -47,7 +45,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
-        Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=...&query=$search'));
+        Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&query=$search'));
 
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body)['results'];
@@ -91,12 +89,12 @@ class _SearchWidgetState extends State<SearchWidget> {
         ),
         titleSpacing: 0,
         elevation: 0,
-        // actions: <Widget>[
-        // IconButton(
-        //   icon: const Icon(Icons.search),
-        //   onPressed: getTextInputData,
-        // ),
-        // ],
+        actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: getTextInputData,
+        ),
+        ],
       ),
       key: imagesListKey,
       body: Column(
@@ -104,12 +102,13 @@ class _SearchWidgetState extends State<SearchWidget> {
           SizedBox(
             height: 50,
             child: ListView.builder(
+              itemCount: 7,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                bool select = false;
                 return Padding(
                   padding: const EdgeInsets.only(left: 5),
-                  child: ChoiceChip (
+                  child:
+                  ChoiceChip (
                     label: Text(_chipLabel[index]),
                     selected: _selected[index],
                     selectedColor: Colors.blue,
@@ -130,7 +129,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             child: FutureBuilder<List<ImageData>>(
               future: getImagesList(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if(snapshot.connectionState == ConnectionState.waiting && snapshot.data!.isEmpty ) {
+                if(snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                           child: CircularProgressIndicator(
                             backgroundColor: Color(0xffadadad),
@@ -139,13 +138,9 @@ class _SearchWidgetState extends State<SearchWidget> {
                           )
                       );
 
-                } else if (snapshot.data.length == 0) {
-                  return const Center(
-                      child: Text('Search for Images')
-                  );
-                }
-                else {
+                } else if( snapshot.hasData && snapshot.data.isNotEmpty){
                 return GridView.builder(
+                  itemCount: snapshot.data!.length,
                   gridDelegate: SliverQuiltedGridDelegate(
                     crossAxisCount: 4,
                     mainAxisSpacing: 3,
@@ -183,27 +178,16 @@ class _SearchWidgetState extends State<SearchWidget> {
                                     child: DetailsWidget(imageData: data,)
                                 );
                               });
-                        },
-                        // onDoubleTap: () {
-                        //   Navigator.push(
-                        //     context, MaterialPageRoute(
-                        //     builder: (BuildContext context) => FavouriteWidget(),
-                        //   ),
-                        //   );
-                        // },
-                        // onLongPress: () {
-                        //   Navigator.push(
-                        //     context, MaterialPageRoute(
-                        //     builder: (BuildContext context) => CartWidget(),
-                        //   ),
-                        //   );
-                        // },
-
-
+                        },  
                       );
                     },
                   );
                 }
+                return const Center(
+                child: Text('Search for Images')
+                );
+
+
               },
             ),
           )

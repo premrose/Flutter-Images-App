@@ -11,80 +11,21 @@ import 'details.dart';
 import 'favorites.dart';
 
 void main() {
-  runApp(  FilterListWidget() );
-}
-
-class FilterListWidget extends StatelessWidget{
-  FilterListWidget({Key? key}) : super(key: key);
-
-  final List<String> _chipLabel = ['Latest', 'Trending', 'Wallpapers', 'Abstract', 'Animals', 'Technology', 'Nature'];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        children: [
-          Center(
-            child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                      icon: const Icon(Icons.search_outlined),
-                      onPressed: () {
-                        Navigator.push(
-                          context, MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                          const SearchWidget(),
-                        ),
-                        );
-                      }
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: SizedBox(
-                        height: 50,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: List<Widget>.generate(7, (int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: ChoiceChip(
-                                  label: Text(_chipLabel[index]),
-                                  selected: true,
-                                  shape: const StadiumBorder(side: BorderSide(color: Colors.black12)),
-                                  onSelected: (bool selected) {
-
-                                  }
-                              ),
-                            );
-                          },
-                          ),
-                        )
-                    ),
-                  ),
-                ]
-            ),
-          ),
-          const Flexible(
-              child: HomeWidget()
-          )
-        ]
-    );
-  }
-
+  runApp( const HomeWidget() );
 }
 
 class HomeWidget extends StatefulWidget  {
   const HomeWidget({Key? key}) : super(key: key);
 
   @override
-  _MyStatefullWidgetState createState() => _MyStatefullWidgetState();
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
 
-class _MyStatefullWidgetState extends State<HomeWidget> {
+class _MyStatefulWidgetState extends State<HomeWidget> {
 
   late Future<List<ImageData>> images;
 
-  final imagesListKey = GlobalKey<_MyStatefullWidgetState>();
+  final imagesListKey = GlobalKey<_MyStatefulWidgetState>();
 
   @override
   void initState() {
@@ -95,7 +36,7 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
-        Uri.parse('https://api.unsplash.com/photos/?client_id=...&per_page=30&page='));
+        Uri.parse('https://api.unsplash.com/photos/?client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&per_page=30&page='));
 
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body);
@@ -125,6 +66,49 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
     final double itemWidth = size.width / 2.1;
 
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 55,
+        title: Text('WALLPAPERHIVE',
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).primaryColor
+            )
+        ),
+        centerTitle: false,
+        titleSpacing: 12,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          // side: const BorderSide(width: 1),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
+        ),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.search_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context, MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                  const SearchWidget(),
+                ),
+                );
+              }
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite_outline_rounded),
+            iconSize: 27.0,
+            onPressed: () {
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (BuildContext context) => FavouriteWidget(favoriteItems: likedImages),
+                ),
+              );
+            }
+          ),
+          const SizedBox(width: 3)
+        ],
+      ),
       key: imagesListKey,
       body: FutureBuilder<List<ImageData>>(
         future: images,
@@ -181,7 +165,6 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                                       setState(() {
                                         if (liked) {
                                           likedImages.remove(save);
-
                                         } else {
                                           likedImages.add(save);
                                         }
@@ -189,11 +172,12 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                                     },
                                     onLongPress: () {
                                       Navigator.push(
-                                          context, MaterialPageRoute(
+                                        context, MaterialPageRoute(
                                           builder: (BuildContext context) =>  FavouriteWidget(
-                                        favoriteItems: likedImages,
-                                      ),
-                                      ));
+                                            favoriteItems: likedImages,
+                                          ),
+                                        )
+                                      );
                                     }
                                   ),
                               ),
@@ -208,14 +192,15 @@ class _MyStatefullWidgetState extends State<HomeWidget> {
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
-                        isScrollControlled: true,
+                      isScrollControlled: true,
                       builder: (context) {
                         return FractionallySizedBox(
-                            heightFactor: 0.96,
-                            child: DetailsWidget(imageData: data,)
+                          heightFactor: 0.96,
+                          child: DetailsWidget(imageData: data,)
+                        );
+                      }
                     );
-                  });
-                    },
+                  },
                   onDoubleTap: () {
                     setState(() {
                       if (liked) {

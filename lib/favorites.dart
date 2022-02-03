@@ -5,7 +5,6 @@ void main() {
   runApp(const FavouriteWidget(favoriteItems: [],));
 }
 
-
 class FavouriteWidget extends StatelessWidget {
 
   final List<String> favoriteItems;
@@ -20,6 +19,18 @@ class FavouriteWidget extends StatelessWidget {
     final double itemWidth = size.width / 2.1;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Favorites',style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).primaryColor
+        )),
+        centerTitle: false,
+        titleSpacing: 12,
+        elevation: 0,
+        toolbarHeight: 55,
+      ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -27,7 +38,12 @@ class FavouriteWidget extends StatelessWidget {
         ),
         itemCount: favoriteItems.length,
         itemBuilder: (BuildContext context, int index) {
-
+        if(favoriteItems.isEmpty){
+          return const Center(
+              child: Text('Add Favorites')
+          );
+        }
+        else{
           return InkWell(
             child: Padding(
               padding: const EdgeInsets.all(3),
@@ -50,6 +66,7 @@ class FavouriteWidget extends StatelessWidget {
               ),
             ),
           );
+          }
         },
 
       ),

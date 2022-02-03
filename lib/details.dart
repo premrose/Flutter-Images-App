@@ -3,6 +3,8 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import 'package:sp/userprofile.dart';
+
 class DetailsWidget extends StatelessWidget{
 
   final ImageData imageData;
@@ -51,29 +53,47 @@ class DetailsWidget extends StatelessWidget{
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height : 35,
-                                            width : 35,
-                                            decoration: BoxDecoration(
-                                              borderRadius : const BorderRadius.all(Radius.circular(25)),
-                                              image : DecorationImage(
-                                                image: NetworkImage(imageData.profileImage),
-                                                fit: BoxFit.cover,
+                                      InkWell(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height : 35,
+                                              width : 35,
+                                              decoration: BoxDecoration(
+                                                borderRadius : const BorderRadius.all(Radius.circular(25)),
+                                                image : DecorationImage(
+                                                  image: NetworkImage(imageData.profileImage),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(imageData.name.toUpperCase(),
-                                            style: const TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                            )
-                                          ),
-                                        ]
+                                            const SizedBox(width: 5),
+                                            Text(imageData.name.toUpperCase(),
+                                              style: const TextStyle(
+                                                fontFamily: 'Roboto',
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                              )
+                                            ),
+                                          ]
+                                        ),
+                                        onTap:(){
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            builder: (context) {
+                                              return FractionallySizedBox(
+                                                  heightFactor: 0.96,
+                                                  child: ProfilePhotosWidget(
+                                                    userName: imageData,
+                                                    name: imageData,
+                                                    profile: imageData,
+                                                  )
+                                              );
+                                            }
+                                          );
+                                        }
                                       ),
                                       const SizedBox(height: 4),
                                       SizedBox(
@@ -211,18 +231,21 @@ class DetailsWidget extends StatelessWidget{
                   )
             ),
             Positioned(
-              right: 15.0,
-              top: 20.0,
+              left: 20.0,
+              top: 35.0,
               child: GestureDetector(
                 onTap: (){
                   Navigator.of(context).pop();
                 },
-                child: const Align(
+                child: Align(
                   alignment: Alignment.topRight,
                   child: CircleAvatar(
-                    radius: 14.0,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.close, color: Colors.red),
+                    radius: 18.0,
+                    backgroundColor: Theme.of(context).primaryColorLight,
+                    child: Icon(Icons.arrow_back_ios_rounded,
+                      color: Theme.of(context).primaryColorDark,
+                      size: 22
+                    ),
                   ),
                 ),
               ),

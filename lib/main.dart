@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'customappbar.dart';
-import 'customdrawer.dart';
 import 'home.dart';
 
 void main() {
@@ -60,40 +58,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
             themeMode: currentMode,
-            home: const MyHomePage(title: 'WALLPAPERHIVE'),
+            home: const HomeWidget(),
           );
         }
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  int pageIndex = 0;
-
-  GlobalKey bottomNavigationKey = GlobalKey();
-
-  late String _title;
-
-  @override
-  initState(){ _title='WALLPAPERHIVE'; }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: pageIndex == 0 ? CustomAppBar(title: _title,) : null,
-      endDrawer: const CustomDrawer(),
-      body: FilterListWidget(),
     );
   }
 }
