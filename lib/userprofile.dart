@@ -36,7 +36,7 @@ class _ProfilePhotosWidgetState extends State<ProfilePhotosWidget> {
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
-        Uri.parse('https://api.unsplash.com/users/$username/photos/?client_id=7P_EvCeZLcR3ZeY7lOD8T1sGjXty_wasCviRfcXINYY&per_page=30&page='));
+        Uri.parse('https://api.unsplash.com/users/$username/photos/?client_id=...&per_page=30&page='));
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body);
       List<ImageData> images = items.map<ImageData>((json) {
