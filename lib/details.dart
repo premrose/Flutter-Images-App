@@ -38,11 +38,11 @@ class DetailsWidget extends StatelessWidget{
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Color(0x00000000), Color(0xAB000000)],
+                            colors: [Color(0x00000000), Color(0xD2000000)],
                           ),
                         ),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,8 +57,8 @@ class DetailsWidget extends StatelessWidget{
                                         child: Row(
                                           children: [
                                             Container(
-                                              height : 35,
-                                              width : 35,
+                                              height : 40,
+                                              width : 40,
                                               decoration: BoxDecoration(
                                                 borderRadius : const BorderRadius.all(Radius.circular(25)),
                                                 image : DecorationImage(
@@ -67,15 +67,28 @@ class DetailsWidget extends StatelessWidget{
                                                 ),
                                               ),
                                             ),
-                                            const SizedBox(width: 5),
-                                            Text(imageData.name.toUpperCase(),
-                                              style: const TextStyle(
-                                                fontFamily: 'Roboto',
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              )
-                                            ),
+                                            const SizedBox(width: 8),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(imageData.name.toUpperCase(),
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Roboto',
+                                                    fontSize: 20,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                  )
+                                                ),
+                                                const Text('by Unsplash',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto',
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w300,
+                                                  )
+                                                ),
+                                              ]
+                                            )
                                           ]
                                         ),
                                         onTap:(){
@@ -95,132 +108,186 @@ class DetailsWidget extends StatelessWidget{
                                           );
                                         }
                                       ),
-                                      const SizedBox(height: 4),
-                                      SizedBox(
-                                        width: 200,
-                                        child:Text(imageData.description,
-                                          style: const TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400,
-                                            overflow: TextOverflow.fade,
-                                          )
-                                        )
-                                      )
                                     ]
                                   ),
                                 ),
+                                const SizedBox(width: 4),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10, bottom: 5,),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                          height : 55,
-                                          width : 37,
-                                          decoration: const BoxDecoration(
-                                            borderRadius : BorderRadius.all(Radius.circular(8)),
-                                            color: Color(0x46FFFFFF),
-                                          ),
-                                          child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(height: 2),
-                                                InkWell(
-                                                    child: const Icon(Icons.favorite, size: 25,color: Color(0xD8FFFFFF),),
-                                                    onTap: () {}
-                                                ),
-                                                const SizedBox(height: 1),
-                                                Text(imageData.likes,
-                                                    style: const TextStyle(
-                                                      fontFamily: 'Roboto',
-                                                      fontSize: 12,
-                                                      color: Color(0xD8FFFFFF),
-                                                      fontWeight: FontWeight.w400,
-                                                    )
-                                                ),
-                                                const SizedBox(height: 2),
-                                              ]
-                                          ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height : 50,
+                                        width : 40,
+                                        decoration: const BoxDecoration(
+                                          borderRadius : BorderRadius.all(Radius.circular(8)),
+                                          color: Color(0x46FFFFFF),
                                         ),
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          height : 55,
-                                          width : 37,
-                                          decoration: const BoxDecoration(
-                                            borderRadius : BorderRadius.all(Radius.circular(8)),
-                                            color: Color(0x46FFFFFF),
-                                          ),
-                                          child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(height: 2),
-                                                InkWell(
-                                                    child: const Icon(Icons.file_download_outlined, size: 28,color: Color(0xD8FFFFFF),),
-                                                    onTap: () {}
-                                                ),
-                                                const SizedBox(height: 1),
-                                                const Text('20346',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Roboto',
-                                                      fontSize: 10,
-                                                      color: Color(0xD8FFFFFF),
-                                                      fontWeight: FontWeight.w400,
-                                                    )
-                                                ),
-                                                const SizedBox(height: 2),
-                                              ]
-                                          ),
+                                        child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              const SizedBox(height: 2),
+                                              InkWell(
+                                                  child: const Icon(Icons.favorite, size: 25,color: Color(0xD8FFFFFF),),
+                                                  onTap: () {}
+                                              ),
+                                              const SizedBox(height: 1),
+                                              Text(imageData.likes,
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Roboto',
+                                                    fontSize: 12,
+                                                    color: Color(0xD8FFFFFF),
+                                                    fontWeight: FontWeight.w400,
+                                                  )
+                                              ),
+                                              const SizedBox(height: 2),
+                                            ]
                                         ),
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          height : 35,
-                                          width : 37,
-                                          decoration: const BoxDecoration(
-                                            borderRadius : BorderRadius.all(Radius.circular(8)),
-                                            color: Color(0x46FFFFFF),
-                                          ),
-                                          child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(height: 2),
-                                                InkWell(
-                                                    child: const Icon(Icons.info_outlined, size: 23, color: Color(0xD8FFFFFF),),
-                                                    onTap: () {}
-                                                ),
-                                                const SizedBox(height: 2),
-                                              ]
-                                          ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Container(
+                                        height : 50,
+                                        width : 40,
+                                        decoration: const BoxDecoration(
+                                          borderRadius : BorderRadius.all(Radius.circular(8)),
+                                          color: Color(0x46FFFFFF),
                                         ),
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          height : 35,
-                                          width : 37,
-                                          decoration: const BoxDecoration(
-                                            borderRadius : BorderRadius.all(Radius.circular(8)),
-                                            color: Color(0x46FFFFFF),
-                                          ),
-                                          child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(height: 2),
-                                                InkWell(
-                                                    child: const Icon(Icons.analytics_outlined, size: 25, color: Color(0xD8FFFFFF),),
-                                                    onTap: () {}
-                                                ),
-                                                const SizedBox(height: 2),
-                                              ]
-                                          ),
+                                        child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              const SizedBox(height: 2),
+                                              InkWell(
+                                                  child: const Icon(Icons.file_download_outlined, size: 28,color: Color(0xD8FFFFFF),),
+                                                  onTap: () {}
+                                              ),
+                                              const SizedBox(height: 1),
+                                              const Text('1793',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Roboto',
+                                                    fontSize: 10,
+                                                    color: Color(0xD8FFFFFF),
+                                                    fontWeight: FontWeight.w400,
+                                                  )
+                                              ),
+                                              const SizedBox(height: 2),
+                                            ]
                                         ),
-                                        const SizedBox(height: 5),
-                                      ]
+                                      ),
+                                    ]
                                   )
                                 )
+                                // Padding(
+                                //   padding: const EdgeInsets.only(right: 10, bottom: 5,),
+                                //   child: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                //       children: [
+                                //         Container(
+                                //           height : 55,
+                                //           width : 37,
+                                //           decoration: const BoxDecoration(
+                                //             borderRadius : BorderRadius.all(Radius.circular(8)),
+                                //             color: Color(0x46FFFFFF),
+                                //           ),
+                                //           child: Column(
+                                //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                //               crossAxisAlignment: CrossAxisAlignment.center,
+                                //               children: [
+                                //                 const SizedBox(height: 2),
+                                //                 InkWell(
+                                //                     child: const Icon(Icons.favorite, size: 25,color: Color(0xD8FFFFFF),),
+                                //                     onTap: () {}
+                                //                 ),
+                                //                 const SizedBox(height: 1),
+                                //                 Text(imageData.likes,
+                                //                     style: const TextStyle(
+                                //                       fontFamily: 'Roboto',
+                                //                       fontSize: 12,
+                                //                       color: Color(0xD8FFFFFF),
+                                //                       fontWeight: FontWeight.w400,
+                                //                     )
+                                //                 ),
+                                //                 const SizedBox(height: 2),
+                                //               ]
+                                //           ),
+                                //         ),
+                                //         const SizedBox(height: 10),
+                                //         Container(
+                                //           height : 55,
+                                //           width : 37,
+                                //           decoration: const BoxDecoration(
+                                //             borderRadius : BorderRadius.all(Radius.circular(8)),
+                                //             color: Color(0x46FFFFFF),
+                                //           ),
+                                //           child: Column(
+                                //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                //               crossAxisAlignment: CrossAxisAlignment.center,
+                                //               children: [
+                                //                 const SizedBox(height: 2),
+                                //                 InkWell(
+                                //                     child: const Icon(Icons.file_download_outlined, size: 28,color: Color(0xD8FFFFFF),),
+                                //                     onTap: () {}
+                                //                 ),
+                                //                 const SizedBox(height: 1),
+                                //                 Text(imageData.downloads,
+                                //                     style: const TextStyle(
+                                //                       fontFamily: 'Roboto',
+                                //                       fontSize: 10,
+                                //                       color: Color(0xD8FFFFFF),
+                                //                       fontWeight: FontWeight.w400,
+                                //                     )
+                                //                 ),
+                                //                 const SizedBox(height: 2),
+                                //               ]
+                                //           ),
+                                //         ),
+                                //         const SizedBox(height: 10),
+                                //         Container(
+                                //           height : 35,
+                                //           width : 37,
+                                //           decoration: const BoxDecoration(
+                                //             borderRadius : BorderRadius.all(Radius.circular(8)),
+                                //             color: Color(0x46FFFFFF),
+                                //           ),
+                                //           child: Column(
+                                //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                //               crossAxisAlignment: CrossAxisAlignment.center,
+                                //               children: [
+                                //                 const SizedBox(height: 2),
+                                //                 InkWell(
+                                //                     child: const Icon(Icons.info_outlined, size: 23, color: Color(0xD8FFFFFF),),
+                                //                     onTap: () {}
+                                //                 ),
+                                //                 const SizedBox(height: 2),
+                                //               ]
+                                //           ),
+                                //         ),
+                                //         const SizedBox(height: 10),
+                                //         Container(
+                                //           height : 35,
+                                //           width : 37,
+                                //           decoration: const BoxDecoration(
+                                //             borderRadius : BorderRadius.all(Radius.circular(8)),
+                                //             color: Color(0x46FFFFFF),
+                                //           ),
+                                //           child: Column(
+                                //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                //               crossAxisAlignment: CrossAxisAlignment.center,
+                                //               children: [
+                                //                 const SizedBox(height: 2),
+                                //                 InkWell(
+                                //                     child: const Icon(Icons.analytics_outlined, size: 25, color: Color(0xD8FFFFFF),),
+                                //                     onTap: () {}
+                                //                 ),
+                                //                 const SizedBox(height: 2),
+                                //               ]
+                                //           ),
+                                //         ),
+                                //         const SizedBox(height: 5),
+                                //       ]
+                                //   )
+                                // )
                               ]
                             ),
                             const SizedBox(height: 18),
@@ -241,7 +308,7 @@ class DetailsWidget extends StatelessWidget{
                   alignment: Alignment.topRight,
                   child: CircleAvatar(
                     radius: 18.0,
-                    backgroundColor: Theme.of(context).primaryColorLight,
+                    backgroundColor: Theme.of(context).primaryColorLight.withOpacity(0.5),
                     child: Icon(Icons.arrow_back_ios_rounded,
                       color: Theme.of(context).primaryColorDark,
                       size: 22

@@ -21,7 +21,9 @@ class SearchWidget extends StatefulWidget  {
 class _SearchWidgetState extends State<SearchWidget> {
 
   final List<String> _chipLabel = ['Latest', 'Trending', 'Wallpapers', 'Abstract', 'Animals', 'Technology', 'Nature'];
-  final List<bool> _selected = [false, false,false, false,false, false,false];
+
+  int _selectedIndex = 0;
+
   final _search = TextEditingController();
 
   late Future<List<ImageData>> images;
@@ -45,7 +47,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   Future<List<ImageData>> getImagesList() async {
     final response = await http.get(
-        Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=...&query=$search'));
+        Uri.parse('https://api.unsplash.com/search/photos?per_page=30&client_id=...&query=$search:"latest"'));
 
     if (response.statusCode == 200) {
       final items = jsonDecode(response.body)['results'];
@@ -68,7 +70,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           enableSuggestions : true,
           controller: _search,
           decoration: const InputDecoration(
-            hintText: "Search for Images",
+            hintText: "Search Images from Unsplash",
             hintStyle: TextStyle(
               color: Color.fromRGBO(146, 146, 146, 0.7300000190734863),
               fontFamily: 'Roboto',
@@ -89,40 +91,42 @@ class _SearchWidgetState extends State<SearchWidget> {
         ),
         titleSpacing: 0,
         elevation: 0,
-        actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: getTextInputData,
-        ),
-        ],
+        // actions: <Widget>[
+        // IconButton(
+        //   icon: const Icon(Icons.search),
+        //   onPressed: getTextInputData,
+        // ),
+        // ],
       ),
       key: imagesListKey,
       body: Column(
         children: [
           SizedBox(
             height: 50,
-            child: ListView.builder(
-              itemCount: 7,
+            child: ListView(
               scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child:
-                  ChoiceChip (
-                    label: Text(_chipLabel[index]),
-                    selected: _selected[index],
-                    selectedColor: Colors.blue,
-                    backgroundColor: Colors.black12,
-                    onSelected: (bool value) {
-                      _selected[index]= value;
-                      setState(() {
-                        search = _chipLabel[index];
-                      });
-                      getImagesList();
-                    },
-                  ),
-                );
-              }
+              children: List.generate(7, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child:
+                    ChoiceChip (
+                      label: Text(_chipLabel[index]),
+                      selected: _selectedIndex == index,
+                      backgroundColor: Colors.black12,
+                      selectedColor: const Color.fromRGBO(
+                          121, 121, 121, 0.6392156862745098),
+                      onSelected: (selected) {
+                        if(selected){
+                        setState(() {
+                          _selectedIndex = index;
+                          search = _chipLabel[index];
+                        });}
+                        getImagesList();
+                      },
+                    ),
+                  );
+                }
+              ),
             ),
           ),
           Flexible(

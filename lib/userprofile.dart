@@ -92,6 +92,15 @@ class _ProfilePhotosWidgetState extends State<ProfilePhotosWidget> {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
+                const SizedBox(height: 4),
+                const Text('by unsplash',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 15,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 20),
               ]
             ),
@@ -173,7 +182,7 @@ class _ProfilePhotosWidgetState extends State<ProfilePhotosWidget> {
               alignment: Alignment.topRight,
               child: CircleAvatar(
                 radius: 16.0,
-                backgroundColor: Theme.of(context).primaryColorLight,
+                backgroundColor: Theme.of(context).primaryColorLight.withOpacity(0.5),
                 child: Icon(Icons.arrow_back_ios_rounded,
                     color: Theme.of(context).primaryColorDark,
                     size: 22

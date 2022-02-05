@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
               primaryColorLight: Colors.black,
               primaryColorDark: Colors.white,
+              accentColor: Colors.white,
               canvasColor: Colors.white,
               indicatorColor: Colors.black54,
               appBarTheme: const AppBarTheme(
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
               primaryColorLight: Colors.white,
               brightness: Brightness.dark,
               primaryColorDark: Colors.black,
+              accentColor: Colors.transparent,
               canvasColor: Colors.black,
               indicatorColor: Colors.white54,
               appBarTheme: const AppBarTheme(

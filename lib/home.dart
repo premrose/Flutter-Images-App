@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sp/imagedata.dart';
 import 'package:sp/trendingsearch.dart';
+import 'package:sp/userprofile.dart';
 import 'details.dart';
 import 'favorites.dart';
 
@@ -71,7 +72,7 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
         title: Text('WALLPAPERHIVE',
             style: TextStyle(
                 fontFamily: 'Montserrat',
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).primaryColor
             )
@@ -80,7 +81,6 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
         titleSpacing: 12,
         elevation: 0,
         shape: const RoundedRectangleBorder(
-          // side: const BorderSide(width: 1),
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),),
         ),
         actions: <Widget>[
@@ -119,6 +119,7 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
                 crossAxisCount: 2,
                 childAspectRatio: 0.70,
               ),
+              itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 var data = snapshot.data![index];
                 String save = data.thumbnail;
@@ -131,12 +132,7 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
                       height : itemHeight,
                       width : itemWidth,
                       decoration: BoxDecoration(
-                        borderRadius : const BorderRadius.only(
-                          topLeft: Radius.circular(5),
-                          topRight: Radius.circular(5),
-                          bottomLeft: Radius.circular(5),
-                          bottomRight: Radius.circular(5),
-                        ),
+                        borderRadius : const BorderRadius.all(Radius.circular(5)),
                         color : const Color.fromRGBO(230, 230, 230, 1),
                         image : DecorationImage(
                           image: NetworkImage(data.thumbnail),
@@ -146,43 +142,95 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children:[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children:[
-                              Container(),
-                              Container(
-                                  height : 30,
-                                  width : 30,
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: const BoxDecoration(
-                                    borderRadius : BorderRadius.all(Radius.circular(18)),
-                                    color: Color(0x20000000),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4, right: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children:[
+                                InkWell(
+                                  child: Container(
+                                    height : 27,
+                                    width : 27,
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      borderRadius : const BorderRadius.all(Radius.circular(18)),
+                                      border: Border.all(
+                                        color: const Color(0x7EFFFFFF),
+                                        width: 1.0,
+                                        style: BorderStyle.solid
+                                      ),
+                                      color: const Color(0x59000000),
+                                      image:  DecorationImage(
+                                        image: NetworkImage(data.profileImage),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                  child: InkWell(
-                                    child: Icon( liked ?Icons.favorite: Icons.favorite,
-                                      color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1), size: 22.0),
-                                    onTap: () {
-                                      setState(() {
-                                        if (liked) {
-                                          likedImages.remove(save);
-                                        } else {
-                                          likedImages.add(save);
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder: (context) {
+                                          return FractionallySizedBox(
+                                              heightFactor: 0.96,
+                                              child: ProfilePhotosWidget(
+                                                userName: data,
+                                                name: data,
+                                                profile: data,
+                                              )
+                                          );
                                         }
-                                      });
-                                    },
-                                    onLongPress: () {
-                                      Navigator.push(
-                                        context, MaterialPageRoute(
-                                          builder: (BuildContext context) =>  FavouriteWidget(
-                                            favoriteItems: likedImages,
+                                    );
+                                  },
+                                ),
+                                Container(
+                                    height : 27,
+                                    width : 50,
+                                    padding: const EdgeInsets.all(4.2),
+                                    decoration: const BoxDecoration(
+                                      borderRadius : BorderRadius.all(Radius.circular(18)),
+                                      color: Color(0x59FFFFFF),
+                                    ),
+                                    child: InkWell(
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon( liked ?Icons.favorite: Icons.favorite_outline_rounded,
+                                              color: liked ? Colors.red.withOpacity(0.8) :Colors.white.withOpacity(1),
+                                              size: 20.0
                                           ),
-                                        )
-                                      );
-                                    }
-                                  ),
-                              ),
-                              const SizedBox(width: 5),
-                            ]
+                                          const SizedBox(width: 3),
+                                          Text(data.likes,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xFFFFFFFF),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                        ]
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          if (liked) {
+                                            likedImages.remove(save);
+                                          } else {
+                                            likedImages.add(save);
+                                          }
+                                        });
+                                      },
+                                      onLongPress: () {
+                                        Navigator.push(
+                                          context, MaterialPageRoute(
+                                            builder: (BuildContext context) =>  FavouriteWidget(
+                                              favoriteItems: likedImages,
+                                            ),
+                                          )
+                                        );
+                                      }
+                                    ),
+                                ),
+                              ]
+                            ),
                           ),
                           const SizedBox(height: 5),
                         ]
@@ -205,7 +253,6 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
                     setState(() {
                       if (liked) {
                         likedImages.remove(save);
-
                       } else {
                         likedImages.add(save);
                       }
@@ -227,7 +274,6 @@ class _MyStatefulWidgetState extends State<HomeWidget> {
               )
           );
         },
-
       ),
     );
   }
