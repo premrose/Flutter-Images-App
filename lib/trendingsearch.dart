@@ -190,8 +190,6 @@ class _SearchWidgetState extends State<SearchWidget> {
                 return const Center(
                 child: Text('Search for Images')
                 );
-
-
               },
             ),
           )

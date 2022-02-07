@@ -1,5 +1,7 @@
 class ImageData {
+
   final String id, image, thumbnail, name, username, description, downloads, likes, created_at, profileImage;
+
   ImageData({
     required this.id,
     required this.image,
@@ -11,6 +13,7 @@ class ImageData {
     required this.likes,
     required this.downloads,
     required this.profileImage,
+
   });
 
   factory ImageData.fromJson(Map<String, dynamic> json) {
@@ -40,4 +43,5 @@ class ImageData {
     'description': description,
     'profileImage': profileImage,
   };
+
 }

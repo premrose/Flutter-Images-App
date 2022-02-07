@@ -68,7 +68,6 @@ class FavouriteWidget extends StatelessWidget {
           );
           }
         },
-
       ),
     );
   }

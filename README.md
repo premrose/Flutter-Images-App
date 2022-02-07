@@ -1,6 +1,6 @@
 # WallpapersHive
 
-Fetched images from Unsplash using Api.
+Used Unsplash Api for fetching JSON data & displayed as showed in below Images.
 
 Only developed for learning purpose.
 
